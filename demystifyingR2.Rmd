@@ -6,8 +6,9 @@ You might see a warning message just above this file. Something like...
 Don't worry about this for now. We'll address it at the end of this file.
 
 1. Run the following command to see what it does.
-```{r}
+```{r }
 summary(mtcars)
+ 
 ```
 
 If you know about quantiles, then the output should look familiar.

@@ -1,5 +1,5 @@
 setwd("/home/siavash/Downloads")
 reddit <-read.csv('reddit.csv')
 library(ggplot2)
+reddit$age.range <- factor(reddit$age.range, levels=c("Under 18","18-24","25-34","35-44","45-54","55-64","65 or Above"))
 qplot(data = reddit, x = age.range)
-qplot(data = reddit, x = income.range)
