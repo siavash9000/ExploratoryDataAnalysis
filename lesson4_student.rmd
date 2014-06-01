@@ -271,10 +271,13 @@ ggplot(aes(x=age,y=friend_count_mean),data=pf.fc_by_age) + geom_line()
 Programming Assignment
 ```{r Programming Assignment}
 age_by_months_groups <- group_by(pf,age_with_months)
-pf.fc_by_age_months <- summarise(age_by_months_groups,                                 friend_count_mean=mean(friend_count),friend_count_median=median(friend_count), n=n())
-ggplot(aes(x=age_with_months,y=friend_count_mean),
-       data=subset(pf.fc_by_age_months),pf.fc_by_age_months<=71) + 
-  geom_point()
+pf.fc_by_age_months <- summarise(age_by_months_groups,friend_count_mean=mean(friend_count),friend_count_median=median(friend_count), n=n())
+
+p1 <- ggplot(aes(x=age,y=friend_count_mean),data=subset(pf.fc_by_age,pf.fc_by_age<71)) + geom_line() + geom_smooth()
+p2 <- ggplot(aes(x=age_with_months,y=friend_count_mean),data=subset(pf.fc_by_age_months,pf.fc_by_age_months<71)) + geom_line() + geom_smooth()
+p3 <- ggplot(aes(x=round(age/5)*5,y=friend_count_mean),data=subset(pf.fc_by_age,pf.fc_by_age<71)) + geom_line(stat="summary",fun.y=mean)
+library(gridExtra)
+grid.arrange(p1,p2,p3,ncol=1)
 ```
 
 ***
