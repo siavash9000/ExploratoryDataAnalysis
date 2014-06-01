@@ -112,14 +112,19 @@ ggplot(aes(x=age,y=friend_count_mean),data=pf.fc_by_age) + geom_line()
 Notes:
 
 ```{r Overlaying Summaries with Raw Data}
-ggplot(aes(x=age,y=friendships_initiated),data=pf) +  
+ggplot(aes(x=age,y=friendships_initiated),data=pf) +  coord_cartesian(xlim = c(60, 90), y=c(0,1000)) 
   geom_point(alpha = 1/10, position=position_jitter(h=0), color = 'orange') + 
-  coord_cartesian(xlim = c(13, 70), ylim = c(0,1000)) +  geom_line(stat='summary', fun.y=mean) + 
+  coord_trans(y = "sqrt") + geom_line(stat='summary', fun.y=mean) + 
   geom_line(stat='summary', fun.y=quantile, probs=.1,linetype=2,color='blue') + 
   geom_line(stat='summary', fun.y=quantile, probs=.5,color='blue') + 
   geom_line(stat='summary', fun.y=quantile, probs=.9,linetype=2,color='blue') 
 
-
+ggplot(aes(x=age,y=friendships_initiated),data=pf) +
+  geom_point(alpha = 1/10, position=position_jitter(h=0), color = 'orange') + 
+  coord_trans(y = "sqrt") + geom_line(stat='summary', fun.y=mean) + 
+  geom_line(stat='summary', fun.y=quantile, probs=.1,linetype=2,color='blue') + 
+  geom_line(stat='summary', fun.y=quantile, probs=.5,color='blue') + 
+  geom_line(stat='summary', fun.y=quantile, probs=.9,linetype=2,color='blue') 
 ```
 
 #### What are some of your observations of the plot?
@@ -138,7 +143,7 @@ Notes:
 Notes:
 
 ```{r Correlation}
-
+cor.test(x=pf$age,y=pf$friend_count)
 ```
 
 Look up the documentation for the cor.test function.
@@ -152,7 +157,7 @@ Response:
 Notes:
 
 ```{r Correlation on Subsets}
-with(                 , cor.test(age, friend_count))
+with(subset(pf, age <= 70), cor.test(age, friend_count))
 ```
 
 ***
@@ -166,7 +171,7 @@ Notes:
 Notes:
 
 ```{r}
-
+ggplot(aes(x=www_likes_received,y=likes_received),data=pf) + geom_point()
 ```
 
 ***
@@ -175,13 +180,18 @@ Notes:
 Notes:
 
 ```{r Strong Correlations}
+ggplot(aes(x=www_likes_received,y=likes_received),data=pf) + geom_point() + 
+  xlim(0,quantile(pf$www_likes,0.95)) + 
+  ylim(0,quantile(pf$likes_received,0.95)) + 
+  geom_smooth(method='lm',color='red')
+
 
 ```
 
 What's the correlation betwen the two variables? Include the top 5% of values for the variable in the calculation and round to 3 decimal places.
 
 ```{r Correlation Calcuation}
-
+with(pf, cor.test(likes_received,www_likes_received ))
 ```
 
 Response:
@@ -204,7 +214,8 @@ library(alr3)
 Create your plot!
 
 ```{r Temp vs Month}
-
+data(Mitchell)
+ggplot(aes(x=Month,y=Temp),data=Mitchell) + geom_point()
 ```
 
 ***
@@ -216,7 +227,7 @@ b. What is the actual correlation of the two variables?
 (Round to the thousandths place)
 
 ```{r Noisy Scatterplots}
-
+with(Mitchell, cor.test(Month,Temp ))
 ```
 
 ***
@@ -225,7 +236,7 @@ b. What is the actual correlation of the two variables?
 Notes:
 
 ```{r Making Sense of Data}
-
+ggplot(aes(x=Month,y=Temp),data=Mitchell) + geom_point() + scale_x_discrete(breaks=(0,203,12))
 ```
 
 ***
