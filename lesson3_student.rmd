@@ -304,7 +304,13 @@ Response:
 Notes:
 
 ```{r Getting Logical}
+summary(pseudoFacebookData$mobile_likes)
+summary(pseudoFacebookData$mobile_likes>0)
 
+mobile_check_in <- NA
+pseudoFacebookData$mobile_check_in <- ifelse(pseudoFacebookData$mobile_likes>0,1,0)
+pseudoFacebookData$mobile_check_in <- factor(pseudoFacebookData$mobile_check_in)
+summary(pseudoFacebookData$mobile_check_in)
 ```
 
 Response:
